@@ -3,8 +3,8 @@ FROM golang:1.22 AS download-env
 ENV FDB_DOWNLOAD_URL="https://github.com/apple/foundationdb/releases/download"
 ENV CGO_ENABLED=1
 ENV GOOS=linux
-ENV MULTVERSIONS="6.3.23 7.1.31 7.3.59"
-ENV VERSION="7.3.59"
+ENV MULTVERSIONS="7.1.31 7.3.59"
+ENV VERSION="6.3.23"
 
 RUN for v in $MULTVERSIONS; do \
         wget -O /tmp/libfdb_c.$v.x86_64.so $FDB_DOWNLOAD_URL/$v/libfdb_c.x86_64.so; \
@@ -30,9 +30,12 @@ COPY . .
 
 RUN go build -tags=release -buildvcs=false -o /tmp/fdb-exporter
 
-FROM debian:trixie-slim
-ENV FDB_NETWORK_OPTION_IGNORE_EXTERNAL_CLIENT_FAILURES=""
-ENV FDB_NETWORK_OPTION_EXTERNAL_CLIENT_DIRECTORY=/usr/lib/
+FROM ubuntu
+
+RUN apt update && apt install curl -y
+
+ENV EXTERNAL_CLIENT_DIRECTORY=/usr/lib/
+ENV IGNORE_EXTERNAL_CLIENT_FAILURES=""
 COPY --from=download-env /tmp/libfdb*.so /usr/lib/
 COPY --from=download-env /usr/bin/fdbcli /usr/bin/
 COPY --from=download-env /usr/lib/libfdb_c.so /lib/

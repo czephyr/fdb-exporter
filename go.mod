@@ -3,7 +3,6 @@ module github.com/tigrisdata/fdb-exporter
 go 1.18
 
 require (
-	github.com/apple/foundationdb/bindings/go v0.0.0-20231025163521-0301045e333a
 	github.com/m3db/prometheus_client_golang v1.12.8
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
@@ -11,6 +10,7 @@ require (
 )
 
 require (
+	github.com/apple/foundationdb/bindings/go v0.0.0-20211207225159-47b9a81d1c10 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
